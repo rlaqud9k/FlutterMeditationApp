@@ -15,10 +15,13 @@ class testController extends StateNotifier<int>{
 }
 
 //void main () => runApp은 기본포맷임 arrow아니더라도 그냥{}로도 가능
-void main() => runApp(MaterialApp(
-      home: new myApp(), //navigator 직접박으면 안움직임
+void main() => runApp(
+    MultiProvider(
+        providers: [StateNotifierProvider<TimerStateNotifier, TimerState>(create: (_) => TimerStateNotifier(),)],
+        child: MaterialApp(home: new myApp(),
+        )
     ));
-
+//
 List<String> TitleList = ['CandleMeditation', 'ChakraMeditation'];
 
 List<String> CandleMeditationCard = [
@@ -44,52 +47,46 @@ class myApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<String> TitleList = ['CandleMeditation', 'ChakraMeditation'];
-    return MultiProvider(
-      providers: [StateNotifierProvider<TimerStateNotifier, TimerState>(create: (_) => TimerStateNotifier(),)],
-      child : MaterialApp(
-        home: Scaffold(
-          appBar: Text(context.read()),
-          backgroundColor: Colors.black26,
+    return Scaffold(
+      backgroundColor: Colors.black26,
 //            appBar: AppBar(
 //              title: Text('index'),
 //            ),
 
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Container(
-                child:
-                Image.asset('images/ows.jpg', height: 350, fit: BoxFit.fill),
-              ),
-              GestureDetector(
-                child: Image.asset(
-                  'images/candle.jpg',
-                  height: 150,
-                  fit: BoxFit.fill,
-                ),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              ImageClick(TitleList[0], CandleMeditationCard)));
-                },
-              ),
-              GestureDetector(
-                child: Image.asset('images/chakara.jpg',
-                    height: 150, fit: BoxFit.fill),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              ImageClick(TitleList[1], ChakraMeditationCard)));
-                },
-              )
-            ],
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          Container(
+            child:
+            Image.asset('images/ows.jpg', height: 350, fit: BoxFit.fill),
           ),
-        ),
+          GestureDetector(
+            child: Image.asset(
+              'images/candle.jpg',
+              height: 150,
+              fit: BoxFit.fill,
+            ),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ImageClick(TitleList[0], CandleMeditationCard)));
+            },
+          ),
+          GestureDetector(
+            child: Image.asset('images/chakara.jpg',
+                height: 150, fit: BoxFit.fill),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ImageClick(TitleList[1], ChakraMeditationCard)));
+            },
+          )
+        ],
       ),
     );
   }
@@ -109,22 +106,21 @@ class _ImageClickState extends State<ImageClick> {
   Widget build(BuildContext context) {
     return Container(
       child: Scaffold(
-          floatingActionButton: Builder(
-
-            builder: (context) {
-              return new FloatingActionButton.extended(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => TimerPage(),
-                    ),
-                  );
-                },
-                label: Text('타이머'),
-                icon: Icon(Icons.fast_forward),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TimerPage(),
+                ),
               );
-            }
+            },
+            child: Row(
+              children: <Widget>[
+                Text('타이머'),
+                Icon(Icons.fast_forward)
+              ],
+            ),
           ),
           appBar: AppBar(title: Text('df')),
           body: SafeArea(
@@ -136,7 +132,7 @@ class _ImageClickState extends State<ImageClick> {
                     height: 50,
 //                  color: Colors.amber[colorCodes[index]],
                     child:
-                        Center(child: Text(widget.MeditationMethodCard[index])),
+                    Center(child: Text(widget.MeditationMethodCard[index])),
                   );
                 }),
           )),
@@ -219,7 +215,7 @@ class TimerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   TimerStateNotifier a = Provider.of<TimerStateNotifier>(context);
+    TimerStateNotifier a = Provider.of<TimerStateNotifier>(context);
 
 
     return Scaffold(
@@ -227,23 +223,25 @@ class TimerPage extends StatelessWidget {
         child: Column(children: <Widget>[
           Text('d'),
           Row(
-           children: <Widget>[
+            children: <Widget>[
 
-             FlatButton(
-               onPressed: (){
+              FlatButton(
+                onPressed: (){
 //                  ButtonTextChange();
 //               context.read()<TimerStateNotifier>().TimeIncrease();
 
-               },
-               child: Text('a'),
-             ),
-             FlatButton(
-               onPressed: (){
-//                   TimerClickChange();
-               },
-               child: Text('시간추가'),
-             ),
-           ],
+                },
+                child: Text(
+                  context.select<TimerState, int>((state) => state.TimerClick).toString()
+                ),
+              ),
+              FlatButton(
+                onPressed: (){
+                  context.read<TimerStateNotifier>().TimeIncrease();
+                },
+                child: Text('시간추가'),
+              ),
+            ],
           ),
         ] ,),
       ),

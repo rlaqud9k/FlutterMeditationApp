@@ -24,6 +24,7 @@ abstract class TimerState with _$TimerState {
 class TimerStateNotifier extends StateNotifier<TimerState>{
   TimerStateNotifier() : super(TimerState());
 
-  TimeIncrease() => state = state.copyWith(TimerClick : state.TimerClick+1);
-
+  TimeIncrease() {
+    state = state.copyWith(TimerClick : state.TimerClick+1);
+  }
 }
