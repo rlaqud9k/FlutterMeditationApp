@@ -1,0 +1,29 @@
+name: meditationapp
+description: A new Flutter application.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  provider: ^4.1.0-dev
+  state_notifier: ^0.4.0
+  flutter_state_notifier: ^0.3.0
+  freezed_annotation:
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  freezed:
+  build_runner:
+  json_serializable:
+
+flutter:
+  uses-material-design: true
+  assets:
+   - images/
