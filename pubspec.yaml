@@ -15,6 +15,11 @@ dependencies:
   state_notifier: ^0.4.0
   flutter_state_notifier: ^0.3.0
   freezed_annotation:
+  youtube_player_flutter: ^7.0.0+5
+  flutter_inappwebview: ^3.4.0+1
+  hive: ^1.4.1+1
+  hive_flutter: ^0.3.0+2
+  uuid: ^2.1.0
 
 dev_dependencies:
   flutter_test:
@@ -27,3 +32,5 @@ flutter:
   uses-material-design: true
   assets:
    - images/
+module:
+  androidX: true // Add this line.

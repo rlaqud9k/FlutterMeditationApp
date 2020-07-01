@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meditationapp/meditation_page.dart';
+import 'youtube_player.dart';
+
 class MeditationExplainPage extends StatefulWidget {
   MeditationExplainPage(this.AppBarTitle, this.MeditationMethodCard);
   String AppBarTitle;
@@ -19,15 +21,13 @@ class _MeditationExplainPageState extends State<MeditationExplainPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MeditationPage(),
+                  builder: (context) => YoutubePlay(),
                 ),
               );
             },
-            child: Row(
-              children: <Widget>[Text('타이머'), Icon(Icons.fast_forward)],
-            ),
+          child: Icon(Icons.fast_forward),
           ),
-          appBar: AppBar(title: Text('df')),
+          appBar: AppBar(title: Text('')),
           body: SafeArea(
             child: ListView.builder(
                 padding: const EdgeInsets.all(8),

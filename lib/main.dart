@@ -4,25 +4,40 @@ import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:meditationapp/TimerState.dart';
+import 'package:meditationapp/my_page/my_page_view.dart';
 import 'package:provider/provider.dart';
 import 'package:state_notifier/state_notifier.dart';
 import 'package:meditationapp/meditation_explanation_Page.dart';
-
-class testController extends StateNotifier<int> {
-  testController() : super(0);
-  int count = 0;
-}
+import 'local_storage/local_storage.dart';
+import 'local_storage/uuid_storage.dart';
+import 'local_storage/account.dart';
+import 'my_page/my_page_input.dart';
+import 'my_page/my_page_view.dart';
 
 //void main () => runApp은 기본포맷임 arrow아니더라도 그냥{}로도 가능
-void main() => runApp(MultiProvider(
-        providers: [
-          StateNotifierProvider<TimerStateNotifier, TimerState>(
-            create: (_) => TimerStateNotifier(),
-          )
-        ],
-        child: MaterialApp(
-          home: new myApp(),
-        )));
+//ctrl + shift + r 위젯 추가
+void main() {
+  boot();
+}
+
+Future<void> boot() async {
+  await LocalStorage().setup();
+  await UuidPage().setup();
+  // await Account().setup();
+  runApp(
+    MultiProvider(
+      providers: [
+        StateNotifierProvider<TimerStateNotifier, TimerState>(
+          create: (_) => TimerStateNotifier(),
+        )
+      ],
+      child: MaterialApp(
+        home: new myApp(),
+      ),
+    ),
+  );
+}
+
 //
 List<String> TitleList = ['CandleMeditation', 'ChakraMeditation'];
 
@@ -46,46 +61,68 @@ List<String> ChakraMeditationCard = [
 ];
 
 class myApp extends StatelessWidget {
+
+
   @override
   Widget build(BuildContext context) {
     List<String> TitleList = ['CandleMeditation', 'ChakraMeditation'];
     return Scaffold(
       backgroundColor: Colors.black26,
-//            appBar: AppBar(
-//              title: Text('index'),
-//            ),
-
+      appBar: AppBar(
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.person_pin),
+            tooltip: 'Mypage',
+            iconSize: 40,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>MyPageInput(), 
+                  //MyPageView(),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          Container(
+          Expanded(
             child: Image.asset('images/ows.jpg', height: 350, fit: BoxFit.fill),
           ),
-          FlatButton(
-            child: Image.asset(
-              'images/candle.jpg',
-              height: 150,
-              fit: BoxFit.fill,
+          Expanded(
+            child: FlatButton(
+              child: Expanded(
+                child: Image.asset(
+                  'images/candle.jpg',
+                  height: 150,
+                  fit: BoxFit.fill,
+                ),
+              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MeditationExplainPage(
+                            TitleList[0], CandleMeditationCard)));
+              },
             ),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          MeditationExplainPage(TitleList[0], CandleMeditationCard)));
-            },
           ),
-          FlatButton(
-            child: Image.asset('images/chakara.jpg',
-                height: 150, fit: BoxFit.fill),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          MeditationExplainPage(TitleList[1], ChakraMeditationCard)));
-            },
+          Expanded(
+            child: FlatButton(
+              child: Image.asset('images/chakara.jpg',
+                  height: 150, fit: BoxFit.fill),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MeditationExplainPage(
+                            TitleList[1], ChakraMeditationCard)));
+              },
+            ),
           )
         ],
       ),
