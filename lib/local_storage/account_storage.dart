@@ -1,46 +1,51 @@
-// import 'package:hive/hive.dart';
+import 'package:hive/hive.dart';
 
-// @HiveType()
-// class AccountHive extends HiveObject {
-// @HiveField(0)
-// String name;
-// @HiveField(1)
-// int age;
-// @HiveField(2)
-// int meditationCount; 
-
-// AccountHive(this.name);
+@HiveType()
+class AccountHive extends HiveObject {
+@HiveField(0)
+String name;
+@HiveField(1)
+int age;
+@HiveField(2)
+int meditationCount; 
 
 // @override
-// String toString() => name; // Just for print()
+// String toString() => 
+
+//  // Just for print()
+}
+
+// void main() async {
+//   // Register Adapter
+//   Hive.registerAdapter(UserAdapter()); 
+
+//   var box = await Hive.openBox<User>('userBox');
+
+//   box.put('david', User('David'));
+//   box.put('sandy', User('Sandy'));
+
+//   print(box.values);
 // }
 
-// // void main() async {
-// //   // Register Adapter
-// //   Hive.registerAdapter(UserAdapter()); 
+// Can be generated automatically
+class AccountHiveAdapter extends TypeAdapter<AccountHive> {
+  @override
+  final typeId = 0;
 
-// //   var box
+  @override
+  AccountHive read(BinaryReader reader) {
+    AccountHive account = AccountHive();
+    account..name = reader.read();
+    account..age = reader.read();
+    account..meditationCount = reader.read();
 
-// //   box.put('david', User('David'));
-// //   box.put('sandy', User('Sandy'));
+    return account;
+  }
 
-// //   print(box.values);
-// // }
-
-// // Can be generated automatically
-// class AccountHiveAdapter extends TypeAdapter<AccountHive> {
-//   @override
-//   final typeId = 0;
-
-//   @override
-//   AccountHive read(BinaryReader reader) {
-//     return AccountHive(reader.read());
-//   }
-
-//   @override
-//   void write(BinaryWriter writer, AccountHive obj) {
-//     writer.write(obj.name);
-//     writer.write(obj.age);
-//     writer.write(obj.meditationCount);
-//   }
-// }
+  @override
+  void write(BinaryWriter writer, AccountHive obj) {
+    writer.write(obj.name);
+    writer.write(obj.age);
+    writer.write(obj.meditationCount);
+  }
+}

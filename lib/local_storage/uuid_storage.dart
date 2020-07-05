@@ -7,10 +7,7 @@ import 'package:uuid/uuid.dart';
 
 class UuidPage {
   static UuidPage _singleton;
-
-  // String name;
-  // int age;
-  // int meditationCount;  
+ 
 
   factory UuidPage(){
     return _singleton??= UuidPage._();

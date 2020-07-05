@@ -13,6 +13,10 @@ import 'local_storage/uuid_storage.dart';
 import 'local_storage/account.dart';
 import 'my_page/my_page_input.dart';
 import 'my_page/my_page_view.dart';
+import 'local_storage/account.dart';
+import 'local_storage/account_storage.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 //void main () => runApp은 기본포맷임 arrow아니더라도 그냥{}로도 가능
 //ctrl + shift + r 위젯 추가
@@ -23,7 +27,7 @@ void main() {
 Future<void> boot() async {
   await LocalStorage().setup();
   await UuidPage().setup();
-  // await Account().setup();
+  await Account().setup();
   runApp(
     MultiProvider(
       providers: [
@@ -60,6 +64,20 @@ List<String> ChakraMeditationCard = [
   '7. 정수리에서 보라색 수레바퀴가 회전한다고 상상하세요',
 ];
 
+Widget acccountInfomation(){
+    Box<AccountHive> box = Hive.box<AccountHive>('userBox');
+    Widget widget;
+    // print(box.length);
+    if(box.length == 0){
+       widget = MyPageInput();
+    }else{
+       widget = MyPageView();
+    }
+
+    return widget;
+}
+
+
 class myApp extends StatelessWidget {
 
 
@@ -78,7 +96,7 @@ class myApp extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>MyPageInput(), 
+                  builder: (context) =>acccountInfomation(), 
                   //MyPageView(),
                 ),
               );
